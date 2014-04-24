@@ -1,0 +1,59 @@
+<%if @cat.persisted?%>
+  <% send_url = cat_url%>
+<% else%>
+  <% send_url = cats_url%>
+<%end%>
+
+<form action=<%=send_url%> method="POST">
+  <%= auth_token_html %>
+
+  <% if @cat.persisted?%>
+    <input type="hidden" value="PATCH" name="_method" >
+  <%end%>
+
+  <label for="cat_name">Name</label>
+  <input type="text" name="cat[name]" id="cat_name" value="<%=@cat.name%>">
+  <br>
+
+  <label for="cat_user_id"> Owner ID </label>
+  <input type="text" name="cat[user_id]" id="cat_user_id" value="<%=@cat.user_id%>">
+  <br>
+
+  <label for="cat_age">Age</label>
+  <input type="text" name="cat[age]" id="cat_age" value="<%=@cat.age%>">
+  <br>
+
+  <label for="cat_birth_date">Birth Date</label>
+  <input type="date" name="cat[birth_date]" id="cat_birth_date" value=<%=@cat.birth_date%>>
+  <br>
+
+  <label for="cat_color">Coat Color</label>
+  <!-- dropdown -->
+  <select name="cat[color]" id="cat_color" value=<%=@cat.color%>>
+    <!-- `brown`, if selected, is the value that will be submitted to
+         the server; user is displayed "Brown" as the choice -->
+    <%colors = %w(white black orange brown yellow calico) %>
+    <% colors.each do |color| %>
+      <% if color == @cat.color %>
+        <option value=<%=color%> selected = "selected"><%=color.capitalize%></option>
+      <%else%>
+        <option value="<%=color%>"><%=color.capitalize%></option>
+      <%end%>
+    <%end%>
+  </select>
+  <br>
+
+  <label for="cat_sex">Sex</label>
+  <%sexes = ["F", "M"]%>
+  <%sexes.each do |sex|%>
+    <% if @cat.sex == sex %>
+      <input type="radio" name="cat[sex]" id="cat_sex_<%=sex%>" value="<%=sex%>" checked="checked">
+      <label for="cat_sex_<%=sex%>"><%=sex%></label>
+    <% else %>
+      <input type="radio" name="cat[sex]" id="cat_sex_<%=sex%>" value="<%=sex%>">
+      <label for="cat_sex_<%=sex%>"><%=sex%></label>
+    <% end %>
+  <%end%>
+  <br>
+  <input type="submit" value="Edit cat">
+</form>
