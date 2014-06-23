@@ -6,8 +6,9 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
 
   def sign_in(user)
-    user.reset_session_token!
-    session[:session_token] = user.session_token
+    session_temp = Session.new({user_id: user.id, session_token: Session.create_session_token})
+    session[:session_token] = session_temp.session_token
+    session_temp.save!
 
     redirect_to cats_url
   end

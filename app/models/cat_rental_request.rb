@@ -2,7 +2,6 @@ class CatRentalRequest < ActiveRecord::Base
   validates :cat_id, :start_date, :end_date, presence: true
   statuses = %w(PENDING APPROVED DENIED)
   validates :status, presence: true, inclusion: {in: statuses }
-  #validates [:cat, :status], uniqueness: true
   before_validation(on: :create) do
     self.status ||= 'PENDING'
   end

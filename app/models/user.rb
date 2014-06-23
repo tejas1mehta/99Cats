@@ -4,16 +4,7 @@ class User < ActiveRecord::Base
   attr_reader :password
 
   has_many :cats
-
-  def self.create_session_token
-    SecureRandom::urlsafe_base64(16)
-  end
-
-  def reset_session_token!
-    self.session_token = self.class.create_session_token
-    self.save!
-    return self.session_token
-  end
+  has_many :sessions
 
   def password=(password_pt)
     if password_pt.present?
@@ -37,11 +28,5 @@ class User < ActiveRecord::Base
   end
 
 
-  private
-  def ensure_session_token
-
-    self.session_token ||= self.class.create_session_token
-
-  end
 
 end
